@@ -1,0 +1,26 @@
+// experiment settings
+exec_num = 3;
+interval_min = 0.1; // min
+
+interval_ms = interval_min * 60 * 1000; // ms
+
+start_t = System.currentTimeMillis();
+
+for(int counter = 0; counter < exec_num; counter++){
+
+	// when counter == 0, remaining_t will be smaller than 0
+	remaining_t = interval_ms * counter - (System.currentTimeMillis() - start_t);
+	if (remaining_t > 0){
+   	mmc.sleep(remaining_t);
+	}
+
+   before_t = System.currentTimeMillis();
+	acq.acquire();
+	print("Round " + counter);
+   while (acq.isAcquisitionRunning())
+      mmc.sleep(100);
+
+	after_t = System.currentTimeMillis();      
+	print("Acuisition time: " + (after_t - before_t) + " ms.");
+}
+print("MDA finished."); 

@@ -1,0 +1,6 @@
+start = System.currentTimeMillis();
+for(int count = 0; count < 5; count++){
+	mmc.setState("LudlWheel", 1);
+	mmc.setState("LudlWheel", 2);
+}
+print("Elapsed time: " + (System.currentTimeMillis() - start) + "ms");
