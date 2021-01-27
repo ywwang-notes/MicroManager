@@ -1,0 +1,54 @@
+/*
+ * revised from BurstExample.bsh
+ */
+
+// file locations
+acqName = gui.getUniqueAcquisitionName("test-burst");
+
+rootDirName = "D:/LabData/Yiwen";
+
+// Number of timepoints
+nrFrames = 20;
+nrChannels = nrSlices = nrPositions = 1;
+
+gui.openAcquisition(acqName, rootDirName,
+   nrFrames, nrChannels, nrSlices, nrPositions,
+   /* show */ true,
+   /* save */ false);
+
+
+width = (int) mmc.getImageWidth();
+height = (int) mmc.getImageHeight();
+bytesPerPixel = (int) mmc.getBytesPerPixel();
+bitDepth = (int) mmc.getImageBitDepth();
+
+start = System.currentTimeMillis();
+
+gui.initializeAcquisition(acqName, width, height, bytesPerPixel, bitDepth);
+
+mmc.startSequenceAcquisition(nrFrames, 0, true);
+frame = 0;
+exposureMs = mmc.getExposure();
+while (mmc.getRemainingImageCount() > 0 || mmc.isSequenceRunning(mmc.getCameraDevice())) {
+   if (mmc.getRemainingImageCount() > 0) {
+   	mmc.setState("LudlWheel", frame%6);
+   	print("filter: " + frame%6);
+      img = mmc.popNextTaggedImage();
+      
+		elapsed = (System.currentTimeMillis() - start); //ms
+		print("frame " + frame + " time: " + elapsed);
+		// ElapsedTime in metadata = time between initializeAcquisition and popNextTaggedImage
+
+      gui.addImageToAcquisition(acqName, frame, 0, 0, 0, img);
+      // mmc.waitForSystem();
+      frame++;
+   }
+   else {
+      mmc.sleep(Math.min(0.5 * exposureMs, 10));
+   }
+}
+
+mmc.stopSequenceAcquisition();
+elapsed = (System.currentTimeMillis() - start); //ms
+
+print("Elapsed time: " + elapsed + "ms (fps = " + (frame*1000/elapsed) + ")");
