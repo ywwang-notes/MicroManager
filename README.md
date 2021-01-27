@@ -4,6 +4,7 @@ see also notes about [microscopy](https://github.com/ywwang-notes/notes/blob/mas
 ## Beanscripts for MicroManager
 * testWheel: test the maximum speed of switching between two filters. Results: about 200 ms.
 * multiMDA: execute multiple MDAs (multidimentional acquisitions) with switching filters. Results with test_MDA configuration: about 1 s. 
+* BurstExample_Wheel: burst acquisition + switch filters. Results: about 270ms per frame.
 
 ## To do
 * multiple-MDA speedup: try
