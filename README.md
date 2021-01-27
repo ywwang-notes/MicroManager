@@ -10,5 +10,4 @@ see also notes about [microscopy](https://github.com/ywwang-notes/notes/blob/mas
 * multiple-MDA speedup: try
   * MDA without image window pop-ups
   * change channel ([example code](https://micro-manager.org/w/images/c/ce/ManualAcq.bsh))
-  * setProperty and snap
 ## Tidbits
